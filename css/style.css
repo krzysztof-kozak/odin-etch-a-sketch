@@ -1,5 +1,6 @@
 :root {
 	--hover-color: rgb(197 202 233 / 66%);
+	--grid-size: 16;
 }
 
 *,
@@ -10,8 +11,8 @@
 
 .sketch-container {
 	display: grid;
-	grid-template-columns: repeat(16, 1fr);
-	grid-template-rows: repeat(16, 1fr);
+	grid-template-columns: repeat(var(--grid-size), 1fr);
+	grid-template-rows: repeat(var(--grid-size), 1fr);
 	width: 600px;
 	height: 600px;
 	border: 1px solid black;
