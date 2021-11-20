@@ -1,17 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
-	const defaultGridSize = input.value;
-
 	setDefaultSliderState();
 	createGrid(defaultGridSize);
 });
 
 const root = document.querySelector(":root");
+
 const sketchPad = document.querySelector(".sketch-container-js");
+const resetBtn = document.querySelector(".reset-btn-js");
 
 const input = document.querySelector("input");
 const output = document.querySelector("output");
 
+const defaultGridSize = input.value;
+
 input.addEventListener("input", handleInputChange);
+resetBtn.addEventListener("click", resetGrid);
 
 function setDefaultSliderState() {
 	output.value = input.value;
@@ -21,7 +24,6 @@ function createGrid(size) {
 	const sizeSquared = size * size;
 
 	for (let i = 0; i < sizeSquared; i++) {
-		console.log(sketchPad.childElementCount);
 		const divElement = document.createElement("div");
 		divElement.classList.add("grid-item");
 		sketchPad.appendChild(divElement);
@@ -32,6 +34,15 @@ function deleteGrid() {
 	while (sketchPad.hasChildNodes()) {
 		sketchPad.firstElementChild.remove();
 	}
+}
+
+function resetGrid() {
+	input.value = defaultGridSize;
+	output.value = defaultGridSize;
+
+	deleteGrid();
+	createGrid(defaultGridSize);
+	adjusGridSize(defaultGridSize);
 }
 
 function adjusGridSize(value) {
