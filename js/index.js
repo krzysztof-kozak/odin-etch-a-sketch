@@ -17,6 +17,7 @@ const optionsMenu = document.querySelector(".options-js");
 
 const colorPicker = document.querySelector(".color-picker-js");
 const gridOverlayCheckbox = document.querySelector(".grid-overlay-checkbox-js");
+const gridEraser = document.querySelector(".grid-eraser-js");
 
 let brushColor = computedStyles.getPropertyValue("--brush-color");
 let gridOverlay = computedStyles.getPropertyValue("--grid-overlay");
@@ -29,6 +30,7 @@ resetBtn.addEventListener("click", resetGrid);
 optionsBtn.addEventListener("click", handleOptionsClick);
 colorPicker.addEventListener("change", handleColorChange);
 gridOverlayCheckbox.addEventListener("change", handleCheckboxChange);
+gridEraser.addEventListener("click", handleGridErase);
 
 function setDefaultSliderState() {
 	output.value = input.value;
@@ -177,4 +179,9 @@ function handleCheckboxChange() {
 	const isChecked = gridOverlayCheckbox.checked;
 
 	root.style.setProperty("--grid-overlay", isChecked ? gridOverlay : "none");
+}
+
+function handleGridErase() {
+	const gridItemsWithInlineBgColor = document.querySelectorAll("div[style*='background-color']");
+	gridItemsWithInlineBgColor.forEach((gridItem) => (gridItem.style.backgroundColor = ""));
 }
