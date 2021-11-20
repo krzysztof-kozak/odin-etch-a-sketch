@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const root = document.querySelector(":root");
 const computerStyles = window.getComputedStyle(root);
-const brushColor = computerStyles.getPropertyValue("--brush-color");
+
+let brushColor = computerStyles.getPropertyValue("--brush-color");
 
 const sketchPad = document.querySelector(".sketch-container-js");
 const resetBtn = document.querySelector(".reset-btn-js");
@@ -18,6 +19,10 @@ const defaultGridSize = input.value;
 sketchPad.addEventListener("mouseenter", handleMouseEnter, { capture: true });
 input.addEventListener("input", handleInputChange);
 resetBtn.addEventListener("click", resetGrid);
+
+function handleKeyDown(e) {
+	console.log(e);
+}
 
 function setDefaultSliderState() {
 	output.value = input.value;
@@ -58,7 +63,7 @@ function createGrid(size) {
 
 	function resetBgColor(element) {
 		if (element.style["background-color"]) {
-			element.style["background-color"] = "unset";
+			element.style["background-color"] = "";
 		}
 	}
 }
@@ -97,5 +102,49 @@ function handleMouseEnter({ target, altKey, ctrlKey }) {
 		return;
 	}
 
-	target.style.backgroundColor = altKey ? brushColor : "unset";
+	// make grid darker on subsequent brush stroke
+	if (target.style.backgroundColor) {
+		if (!target.initialBgColor) {
+			target.initialBgColor = target.style.getPropertyValue("background-color");
+
+			[target.r, target.g, target.b, target.a] =
+				target.initialBgColor.match(/(\d+(?:\.\d+)?)/g);
+
+			if (!target.a) {
+				target.a = 1;
+			}
+
+			target.rDelta = Math.ceil(target.r / 10);
+			target.bDelta = Math.ceil(target.b / 10);
+			target.gDelta = Math.ceil(target.g / 10);
+			target.aDelta = (1 - target.a) / 10;
+		}
+
+		if (target.r > 0) {
+			const darkerR = target.r - Math.ceil(target.rDelta);
+			target.r = darkerR > 0 ? darkerR : 0;
+		}
+
+		if (target.g > 0) {
+			const darkerG = target.g - Math.ceil(target.gDelta);
+			target.g = darkerG > 0 ? darkerG : 0;
+		}
+
+		if (target.b > 0) {
+			const darkerB = target.b - Math.ceil(target.bDelta);
+			target.b = darkerB > 0 ? darkerB : 0;
+		}
+
+		if (target.a < 1) {
+			const higherAlpha = (parseFloat(target.a) + parseFloat(target.aDelta)).toFixed(2);
+			target.a = higherAlpha < 1 ? parseFloat(higherAlpha) : 1;
+		}
+
+		const newDarkerShade = `rgba(${target.r}, ${target.g}, ${target.b}, ${target.a})`;
+
+		target.style.backgroundColor = ctrlKey ? "" : newDarkerShade;
+		return;
+	}
+
+	target.style.backgroundColor = altKey ? brushColor : "";
 }
