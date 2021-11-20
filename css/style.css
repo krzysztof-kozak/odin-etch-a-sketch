@@ -1,5 +1,5 @@
 :root {
-	--hover-color: rgb(197 202 233 / 66%);
+	--brush-color: rgb(197 202 233 / 66%);
 	--grid-size: 16;
 }
 
@@ -7,6 +7,13 @@
 *::before,
 ::after {
 	box-sizing: border-box;
+}
+
+kbd {
+	padding: 0.2em 0.6em;
+	border: 1px solid black;
+	margin: 0 0.5em;
+	background-color: #fff9c4;
 }
 
 .sketch-container {
@@ -24,8 +31,4 @@
 
 .grid-item {
 	border: 1px solid rgb(177 51 51 / 29%);
-}
-
-.grid-item:hover {
-	background-color: var(--hover-color);
 }

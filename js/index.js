@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const root = document.querySelector(":root");
+const computerStyles = window.getComputedStyle(root);
+const brushColor = computerStyles.getPropertyValue("--brush-color");
 
 const sketchPad = document.querySelector(".sketch-container-js");
 const resetBtn = document.querySelector(".reset-btn-js");
@@ -13,6 +15,7 @@ const output = document.querySelector("output");
 
 const defaultGridSize = input.value;
 
+sketchPad.addEventListener("mouseenter", handleMouseEnter, { capture: true });
 input.addEventListener("input", handleInputChange);
 resetBtn.addEventListener("click", resetGrid);
 
@@ -21,6 +24,9 @@ function setDefaultSliderState() {
 }
 
 function createGrid(size) {
+	const squares = document.querySelectorAll(".grid-item");
+	squares.forEach((square) => resetBgColor(square));
+
 	const currentSize = sketchPad.childElementCount;
 	const updatedSize = size * size;
 
@@ -49,6 +55,12 @@ function createGrid(size) {
 			sketchPad.firstElementChild.remove();
 		}
 	}
+
+	function resetBgColor(element) {
+		if (element.style["background-color"]) {
+			element.style["background-color"] = "unset";
+		}
+	}
 }
 
 function deleteGrid() {
@@ -74,4 +86,16 @@ function handleInputChange({ target: { value } }) {
 	output.value = value;
 	createGrid(value);
 	adjusGridSize(value);
+}
+
+function handleMouseEnter({ target, altKey, ctrlKey }) {
+	if (target.classList.contains("sketch-container-js")) {
+		return;
+	}
+
+	if (!altKey && !ctrlKey) {
+		return;
+	}
+
+	target.style.backgroundColor = altKey ? brushColor : "unset";
 }
