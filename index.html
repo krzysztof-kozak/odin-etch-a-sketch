@@ -19,20 +19,28 @@
 				<p>Hold <kbd>alt</kbd>to draw</p>
 				<p>Hold <kbd>ctrl</kbd>to erase</p>
 			</div>
-			<div class="sketch-container sketch-container-js"></div>
 		</div>
-
 		<div class="menu-container">
 			<button class="btn btn--options btn--options-js">Options</button>
 			<ul class="options options-js">
 				<li class="options__item">
-					<input class="color-picker-js" type="color" value="#e51416" />
-					<label for="head">Change color</label>
+					<input class="color-picker-js" type="color" value="#e51416" id="color" />
+					<label for="color">Change color</label>
 				</li>
 				<li class="options__item">Use random colors</li>
-				<li class="options__item">Toggle grid layout</li>
+				<li class="options__item">
+					<input
+						class="grid-overlay-checkbox-js"
+						type="checkbox"
+						name="grid-layout"
+						id="grid-layout"
+						checked
+					/>
+					<label for="grid-layout">Show grid layout</label>
+				</li>
 				<li class="options__item">Erase current grid</li>
 			</ul>
 		</div>
+		<div class="sketch-container sketch-container-js"></div>
 	</body>
 </html>

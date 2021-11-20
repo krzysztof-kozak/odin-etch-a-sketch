@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const root = document.querySelector(":root");
-const computerStyles = window.getComputedStyle(root);
+const computedStyles = window.getComputedStyle(root);
 
 const sketchPad = document.querySelector(".sketch-container-js");
 const resetBtn = document.querySelector(".reset-btn-js");
@@ -16,8 +16,11 @@ const optionsBtn = document.querySelector(".btn--options-js");
 const optionsMenu = document.querySelector(".options-js");
 
 const colorPicker = document.querySelector(".color-picker-js");
+const gridOverlayCheckbox = document.querySelector(".grid-overlay-checkbox-js");
 
-let brushColor = computerStyles.getPropertyValue("--brush-color");
+let brushColor = computedStyles.getPropertyValue("--brush-color");
+let gridOverlay = computedStyles.getPropertyValue("--grid-overlay");
+
 const defaultGridSize = input.value;
 
 sketchPad.addEventListener("mouseenter", handleMouseEnter, { capture: true });
@@ -25,6 +28,7 @@ input.addEventListener("input", handleInputChange);
 resetBtn.addEventListener("click", resetGrid);
 optionsBtn.addEventListener("click", handleOptionsClick);
 colorPicker.addEventListener("change", handleColorChange);
+gridOverlayCheckbox.addEventListener("change", handleCheckboxChange);
 
 function setDefaultSliderState() {
 	output.value = input.value;
@@ -167,4 +171,10 @@ function handleColorChange({ target: { value } }) {
 	const rgbString = `rgb(${r}, ${g}, ${b}`;
 
 	brushColor = rgbString;
+}
+
+function handleCheckboxChange() {
+	const isChecked = gridOverlayCheckbox.checked;
+
+	root.style.setProperty("--grid-overlay", isChecked ? gridOverlay : "none");
 }
