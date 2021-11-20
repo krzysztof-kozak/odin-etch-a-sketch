@@ -21,12 +21,33 @@ function setDefaultSliderState() {
 }
 
 function createGrid(size) {
-	const sizeSquared = size * size;
+	const currentSize = sketchPad.childElementCount;
+	const updatedSize = size * size;
 
-	for (let i = 0; i < sizeSquared; i++) {
-		const divElement = document.createElement("div");
-		divElement.classList.add("grid-item");
-		sketchPad.appendChild(divElement);
+	const delta = updatedSize - currentSize;
+
+	if (delta > 0) {
+		addSquares();
+		return;
+	}
+
+	if (delta < 0) {
+		removeSquares();
+		return;
+	}
+
+	function addSquares() {
+		for (let i = 0; i < delta; i++) {
+			const divElement = document.createElement("div");
+			divElement.classList.add("grid-item");
+			sketchPad.appendChild(divElement);
+		}
+	}
+
+	function removeSquares() {
+		for (let i = 0; i < Math.abs(delta); i++) {
+			sketchPad.firstElementChild.remove();
+		}
 	}
 }
 
@@ -51,8 +72,6 @@ function adjusGridSize(value) {
 
 function handleInputChange({ target: { value } }) {
 	output.value = value;
-
-	deleteGrid();
 	createGrid(value);
 	adjusGridSize(value);
 }
