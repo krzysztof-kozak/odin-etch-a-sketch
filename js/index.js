@@ -16,6 +16,7 @@ const optionsBtn = document.querySelector(".btn--options-js");
 const optionsMenu = document.querySelector(".options-js");
 
 const colorPicker = document.querySelector(".color-picker-js");
+const randomColorsCheckbox = document.querySelector(".random-colors-checkbox-js");
 const gridOverlayCheckbox = document.querySelector(".grid-overlay-checkbox-js");
 const gridEraser = document.querySelector(".grid-eraser-js");
 
@@ -23,13 +24,16 @@ let brushColor = computedStyles.getPropertyValue("--brush-color");
 let gridOverlay = computedStyles.getPropertyValue("--grid-overlay");
 
 const defaultGridSize = input.value;
+let isUsingRandomColors = false;
 
 sketchPad.addEventListener("mouseenter", handleMouseEnter, { capture: true });
 input.addEventListener("input", handleInputChange);
 resetBtn.addEventListener("click", resetGrid);
 optionsBtn.addEventListener("click", handleOptionsClick);
+
 colorPicker.addEventListener("change", handleColorChange);
-gridOverlayCheckbox.addEventListener("change", handleCheckboxChange);
+randomColorsCheckbox.addEventListener("click", handleColorsCheckboxChange);
+gridOverlayCheckbox.addEventListener("change", handleOverlayCheckboxChange);
 gridEraser.addEventListener("click", handleGridErase);
 
 function setDefaultSliderState() {
@@ -110,6 +114,10 @@ function handleMouseEnter({ target, altKey, ctrlKey }) {
 		return;
 	}
 
+	if (isUsingRandomColors) {
+		brushColor = getRandomColor();
+	}
+
 	// make grid darker on subsequent brush stroke
 	if (target.style.backgroundColor) {
 		if (target.currentBgColor !== brushColor) {
@@ -162,6 +170,37 @@ function handleOptionsClick() {
 }
 
 function handleColorChange({ target: { value } }) {
+	const rgbString = hexToRgb(value);
+	brushColor = rgbString;
+}
+
+function handleColorsCheckboxChange() {
+	const isChecked = randomColorsCheckbox.checked;
+	isUsingRandomColors = isChecked ? true : false;
+
+	if (!isUsingRandomColors) {
+		brushColor = hexToRgb(colorPicker.value);
+	}
+}
+
+function handleOverlayCheckboxChange() {
+	const isChecked = gridOverlayCheckbox.checked;
+	root.style.setProperty("--grid-overlay", isChecked ? gridOverlay : "none");
+}
+
+function handleGridErase() {
+	const gridItemsWithInlineBgColor = document.querySelectorAll("div[style*='background-color']");
+	gridItemsWithInlineBgColor.forEach((gridItem) => (gridItem.style.backgroundColor = ""));
+}
+
+function getRandomColor() {
+	const r = Math.floor(Math.random() * (255 + 1));
+	const g = Math.floor(Math.random() * (255 + 1));
+	const b = Math.floor(Math.random() * (255 + 1));
+	return `rgb(${r}, ${g}, ${b})`;
+}
+
+function hexToRgb(value) {
 	const valueWithNoHashtag = value.replace("#", "");
 
 	const colorInHexArray = valueWithNoHashtag.match(/.{1,2}/g);
@@ -171,17 +210,5 @@ function handleColorChange({ target: { value } }) {
 	const b = parseInt(colorInHexArray[2], 16);
 
 	const rgbString = `rgb(${r}, ${g}, ${b}`;
-
-	brushColor = rgbString;
-}
-
-function handleCheckboxChange() {
-	const isChecked = gridOverlayCheckbox.checked;
-
-	root.style.setProperty("--grid-overlay", isChecked ? gridOverlay : "none");
-}
-
-function handleGridErase() {
-	const gridItemsWithInlineBgColor = document.querySelectorAll("div[style*='background-color']");
-	gridItemsWithInlineBgColor.forEach((gridItem) => (gridItem.style.backgroundColor = ""));
+	return rgbString;
 }
