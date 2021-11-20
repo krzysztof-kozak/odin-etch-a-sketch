@@ -9,16 +9,30 @@
 		<title>etch-a-sketch</title>
 	</head>
 	<body>
-		<h1 class="page-title">Etch-a-sketch</h1>
+		<div>
+			<div class="container">
+				<h1 class="page-title">Etch-a-sketch</h1>
+				<label for="grid-size">Grid size: </label>
+				<input type="range" name="grid-size" min="16" max="100" step="1" value="16" />
+				<output class="price-output" for="price"></output>
+				<button class="btn btn--reset reset-btn-js">reset</button>
+				<p>Hold <kbd>alt</kbd>to draw</p>
+				<p>Hold <kbd>ctrl</kbd>to erase</p>
+			</div>
+			<div class="sketch-container sketch-container-js"></div>
+		</div>
 
-		<label for="grid-size">Grid size: </label>
-		<input type="range" name="grid-size" min="16" max="100" step="1" value="16" />
-		<output class="price-output" for="price"></output>
-
-		<button class="reset-btn reset-btn-js">reset</button>
-		<p>Hold <kbd>alt</kbd>to draw.</p>
-		<p>Hold <kbd>ctrl</kbd>to erase</p>
-
-		<div class="sketch-container sketch-container-js"></div>
+		<div class="menu-container">
+			<button class="btn btn--options btn--options-js">Options</button>
+			<ul class="options options-js">
+				<li class="options__item">
+					<input class="color-picker-js" type="color" value="#e51416" />
+					<label for="head">Change color</label>
+				</li>
+				<li class="options__item">Use random colors</li>
+				<li class="options__item">Toggle grid layout</li>
+				<li class="options__item">Erase current grid</li>
+			</ul>
+		</div>
 	</body>
 </html>

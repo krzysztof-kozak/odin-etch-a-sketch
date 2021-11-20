@@ -6,23 +6,25 @@ document.addEventListener("DOMContentLoaded", () => {
 const root = document.querySelector(":root");
 const computerStyles = window.getComputedStyle(root);
 
-let brushColor = computerStyles.getPropertyValue("--brush-color");
-
 const sketchPad = document.querySelector(".sketch-container-js");
 const resetBtn = document.querySelector(".reset-btn-js");
 
 const input = document.querySelector("input");
 const output = document.querySelector("output");
 
+const optionsBtn = document.querySelector(".btn--options-js");
+const optionsMenu = document.querySelector(".options-js");
+
+const colorPicker = document.querySelector(".color-picker-js");
+
+let brushColor = computerStyles.getPropertyValue("--brush-color");
 const defaultGridSize = input.value;
 
 sketchPad.addEventListener("mouseenter", handleMouseEnter, { capture: true });
 input.addEventListener("input", handleInputChange);
 resetBtn.addEventListener("click", resetGrid);
-
-function handleKeyDown(e) {
-	console.log(e);
-}
+optionsBtn.addEventListener("click", handleOptionsClick);
+colorPicker.addEventListener("change", handleColorChange);
 
 function setDefaultSliderState() {
 	output.value = input.value;
@@ -104,11 +106,11 @@ function handleMouseEnter({ target, altKey, ctrlKey }) {
 
 	// make grid darker on subsequent brush stroke
 	if (target.style.backgroundColor) {
-		if (!target.initialBgColor) {
-			target.initialBgColor = target.style.getPropertyValue("background-color");
+		if (target.currentBgColor !== brushColor) {
+			target.currentBgColor = brushColor;
 
 			[target.r, target.g, target.b, target.a] =
-				target.initialBgColor.match(/(\d+(?:\.\d+)?)/g);
+				target.currentBgColor.match(/(\d+(?:\.\d+)?)/g);
 
 			if (!target.a) {
 				target.a = 1;
@@ -140,11 +142,29 @@ function handleMouseEnter({ target, altKey, ctrlKey }) {
 			target.a = higherAlpha < 1 ? parseFloat(higherAlpha) : 1;
 		}
 
-		const newDarkerShade = `rgba(${target.r}, ${target.g}, ${target.b}, ${target.a})`;
+		const newDarkerShade = `rgb(${target.r}, ${target.g}, ${target.b}, ${target.a})`;
 
 		target.style.backgroundColor = ctrlKey ? "" : newDarkerShade;
 		return;
 	}
 
 	target.style.backgroundColor = altKey ? brushColor : "";
+}
+
+function handleOptionsClick() {
+	optionsMenu.classList.toggle("show");
+}
+
+function handleColorChange({ target: { value } }) {
+	const valueWithNoHashtag = value.replace("#", "");
+
+	const colorInHexArray = valueWithNoHashtag.match(/.{1,2}/g);
+
+	const r = parseInt(colorInHexArray[0], 16);
+	const g = parseInt(colorInHexArray[1], 16);
+	const b = parseInt(colorInHexArray[2], 16);
+
+	const rgbString = `rgb(${r}, ${g}, ${b}`;
+
+	brushColor = rgbString;
 }
