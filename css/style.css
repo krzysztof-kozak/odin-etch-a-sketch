@@ -11,24 +11,22 @@
 }
 
 body {
+	font-family: "Roboto", sans-serif;
 	min-height: 100vh;
-	margin: 0;
+	max-width: 960px;
+	margin: 0 auto;
 	display: grid;
 	padding: 0.5em;
-	grid-template-columns: 1fr auto;
+	grid-template-columns: 1fr 1fr;
 	grid-template-rows: auto 1fr;
 	justify-items: center;
 	font-size: 1.5rem;
 	overflow-x: clip;
 }
 
-.container {
-	width: max-content;
-	margin: 0 auto;
-}
-
 .page-title {
 	margin: 0;
+	font-weight: 700;
 }
 
 .btn {
@@ -45,10 +43,15 @@ body {
 	align-self: start;
 }
 
+.instructions-container {
+	justify-self: start;
+}
+
 .menu-container {
 	display: grid;
 	grid-template-rows: min-content;
 	align-items: start;
+	justify-self: end;
 }
 
 .options {
@@ -100,6 +103,7 @@ kbd {
 	width: 960px;
 	height: 960px;
 	border: 1px solid black;
+	box-shadow: 0px 0px 4px 1px black;
 }
 
 .sketch-container:hover {
@@ -108,4 +112,21 @@ kbd {
 
 .grid-item {
 	border: var(--grid-overlay);
+}
+
+.flex-container {
+	display: flex;
+}
+
+footer {
+	grid-column: span 2;
+}
+
+.footer-name {
+	margin: 0;
+}
+
+.github-icon {
+	align-self: center;
+	margin-left: 1em;
 }

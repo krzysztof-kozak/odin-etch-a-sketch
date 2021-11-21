@@ -4,23 +4,28 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+			rel="stylesheet"
+		/>
 		<link rel="stylesheet" href="./css/style.css" />
 		<script src="./js/index.js" defer></script>
 		<title>etch-a-sketch</title>
 	</head>
 	<body>
-		<div>
-			<div class="container">
-				<h1 class="page-title">Etch-a-sketch</h1>
-				<label for="grid-size">Grid size: </label>
-				<input type="range" name="grid-size" min="16" max="100" step="1" value="16" />
-				<output class="price-output" for="price"></output>
-				<button class="btn btn--reset reset-btn-js">reset</button>
-				<p>Hover mouse over the grid</p>
-				<p>Hold <kbd>alt</kbd>to draw</p>
-				<p>Hold <kbd>ctrl</kbd>to erase</p>
-			</div>
+		<div class="instructions-container">
+			<h1 class="page-title">Etch-a-sketch</h1>
+			<label for="grid-size">Grid size: </label>
+			<input type="range" name="grid-size" min="16" max="100" step="1" value="16" />
+			<output class="price-output" for="price"></output>
+			<button class="btn btn--reset reset-btn-js">reset</button>
+			<p>Hover mouse over the grid</p>
+			<p>Hold <kbd>alt</kbd>to draw</p>
+			<p>Hold <kbd>ctrl</kbd>to erase</p>
 		</div>
+
 		<div class="menu-container">
 			<button class="btn btn--options btn--options-js">Options</button>
 			<ul class="options options-js">
@@ -51,5 +56,15 @@
 			</ul>
 		</div>
 		<div class="sketch-container sketch-container-js"></div>
+		<footer>
+			<div class="flex-container">
+				<p class="footer-name">Krzysztof Kozak</p>
+				<a class="github-icon" href="https://github.com/krzysztof-kozak/odin-etch-a-sketch" target="_blank"
+					><img src="https://img.icons8.com/fluency/24/000000/github.png"/>
+				</a>
+			</div>
+				</a>
+			</div>
+		</footer>
 	</body>
 </html>
